@@ -1,0 +1,33 @@
+{
+  "name": "vivi-schulz-brainflix-api",
+  "version": "1.0.0",
+  "description": "brainflix-api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vivischulz/vivi-achulz-brainflix-api.git"
+  },
+  "keywords": [
+    "react",
+    "express",
+    "api",
+    "axios"
+  ],
+  "author": "Vivi Schulz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vivischulz/vivi-achulz-brainflix-api/issues"
+  },
+  "homepage": "https://github.com/vivischulz/vivi-achulz-brainflix-api#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
