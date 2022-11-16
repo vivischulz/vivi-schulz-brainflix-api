@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => {
-  console.log(`Server is running on port 4000 🍡`);
+  console.log(`Server is running on port ${PORT}🍡`);
 });

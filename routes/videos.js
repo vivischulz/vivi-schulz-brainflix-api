@@ -8,7 +8,7 @@ const videos = require(videosJSONFile);
 
 const { getNewId, writeJSONFile } = require("../helper/helper");
 
-//http://localhost:4000/api/videos
+//http://localhost:8080/api/videos
 router.get("/", (_req, res) => {
     try{
   res.status(200).json(videos);
@@ -30,11 +30,38 @@ router.get("/:videoId", (req, res) => {
   }
 });
 
-//create a new video with title, discription, image
+router.post("/:videoId/comments", (req, res) =>{
+  const found = videos.find((video)=> video.id === req.params.videoId);
+
+  if (found){
+    const {comment} = req.body;
+    if(!comment){
+      return res.status(400).json({error:"Please provide your comment"})
+    }
+  
+
+  const newComment = {
+    comment,
+    id:getNewId()
+  };
+
+  video.comments.push(newComment);
+  writeJSONFile(videosJSONFile, comments); 
+
+  res.status(201).json(newComment);
+
+}else{
+   res
+     .status(404)
+     .json({ errorMessage: `Video with ID: ${req.params.videoId} not found, sorry you can comment on that.` });
+}
+});
+
+//create a new video with title, description, image
 router.post("/",(req, res)=>{
 
-    const { title, discription} = req.body;
-    if(!title || !discription){
+    const { title, description} = req.body;
+    if(!title || !description){
         return res.status(400).json({
             error:"Please provide title, discription and image for adding video"
         });
@@ -42,7 +69,7 @@ router.post("/",(req, res)=>{
 
     const newVideo = {
         title,
-        discription,
+        description,
         id:getNewId()
     };
 
