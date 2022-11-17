@@ -67,11 +67,18 @@ router.post("/",(req, res)=>{
         });
     }
 
+    // const newVideo2 = videos[0];
+    // newVideo2.title = req.body.title;
+    // newVideo2.description = req.body.description;
+    // newVideo2.image = "someurl";
+
+
     const newVideo = {
         title,
         description,
         id:getNewId()
     };
+
 
     videos.push(newVideo);
     writeJSONFile(videosJSONFile, videos);
