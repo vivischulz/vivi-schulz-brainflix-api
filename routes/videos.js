@@ -44,6 +44,7 @@ router.post("/:videoId/comments", (req, res) => {
     const newComment = {
       name: "vivi",
       comment,
+      timestamp: new Date().getTime(),
       id: getNewId(),
     };
 
@@ -54,6 +55,7 @@ router.post("/:videoId/comments", (req, res) => {
     }
     const foundComments = found.comments;
     const newFoundComments = [...foundComments, newComment];
+    newFoundComments.sort((a, b) => b.timestamp - a.timestamp);
     console.log("newFoundComments", newFoundComments);
     console.log(videos);
 
