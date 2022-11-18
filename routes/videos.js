@@ -41,6 +41,7 @@ router.post("/:videoId/comments", (req, res) =>{
   
 
   const newComment = {
+    name:"vivi",
     comment,
     id:getNewId()
   };
@@ -60,26 +61,22 @@ router.post("/:videoId/comments", (req, res) =>{
 //create a new video with title, description, image
 router.post("/",(req, res)=>{
 
-    const { title, description} = req.body;
-    if(!title || !description){
+    const { title, description, image} = req.body;
+    if(!title || !description || !image){
         return res.status(400).json({
             error:"Please provide title, discription and image for adding video"
         });
     }
 
-    // const newVideo2 = videos[0];
-    // newVideo2.title = req.body.title;
-    // newVideo2.description = req.body.description;
-    // newVideo2.image = "someurl";
-
 
     const newVideo = {
-        title,
-        description,
-        id:getNewId()
+      title,
+      description,
+      image,
+      id: getNewId(),
     };
 
-
+console.log(newVideo);
     videos.push(newVideo);
     writeJSONFile(videosJSONFile, videos);
 
