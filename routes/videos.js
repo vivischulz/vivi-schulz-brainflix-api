@@ -38,24 +38,26 @@ router.post("/:videoId/comments", (req, res) => {
   if (found) {
     const { comment } = req.body;
     console.log("req.body", req.body);
-    console.log("comment",comment);
+    console.log("comment", comment);
     console.log("found.comments", found.comments);
-    
+
     const newComment = {
       name: "vivi",
       comment,
       id: getNewId(),
     };
 
-    console.log("newComment",newComment);
+    console.log("newComment", newComment);
 
     if (!comment) {
       return res.status(400).json({ error: "Please provide your comment" });
     }
     const foundComments = found.comments;
-   const newFoundComments = [...foundComments , newComment];
-   console.log(newFoundComments);
-    writeJSONFile(videosJSONFile, newFoundComments);
+    const newFoundComments = [...foundComments, newComment];
+    console.log("newFoundComments", newFoundComments);
+    console.log(videos);
+
+    writeJSONFile(videosJSONFile, videos);
 
     res.status(201).json(newComment);
   } else {
