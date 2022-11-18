@@ -52,9 +52,10 @@ router.post("/:videoId/comments", (req, res) => {
     if (!comment) {
       return res.status(400).json({ error: "Please provide your comment" });
     }
-    
-   const foundComments = found.comments.push(newComment);
-    writeJSONFile(videosJSONFile, foundComments);
+    const foundComments = found.comments;
+   const newFoundComments = [...foundComments , newComment];
+   console.log(newFoundComments);
+    writeJSONFile(videosJSONFile, newFoundComments);
 
     res.status(201).json(newComment);
   } else {
