@@ -37,9 +37,6 @@ router.post("/:videoId/comments", (req, res) => {
 
   if (found) {
     const { comment } = req.body;
-    // console.log("req.body", req.body);
-    // console.log("comment", comment);
-    // console.log("found.comments", found.comments);
 
     const newComment = {
       name: "vivi",
@@ -48,23 +45,19 @@ router.post("/:videoId/comments", (req, res) => {
       id: getNewId(),
     };
 
-    // console.log("newComment", newComment);
-
     if (!comment) {
       return res.status(400).json({ error: "Please provide your comment" });
     }
     const foundComments = found.comments;
     const newFoundComments = [...foundComments, newComment];
     newFoundComments.sort((a, b) => b.timestamp - a.timestamp);
-    // console.log("newFoundComments", newFoundComments);
-    // console.log(videos);
 
     writeJSONFile(videosJSONFile, videos);
 
     res.status(201).json(newComment);
   } else {
     res.status(404).json({
-      errorMessage: `Video with ID: ${req.params.videoId} not found, sorry you can comment on that.`,
+      errorMessage: `Video with ID: ${req.params.commentId} not found, sorry you can comment on that.`,
     });
   }
 });
@@ -116,39 +109,29 @@ router.post("/", (req, res) => {
   res.status(201).json(newVideo);
 });
 
-router.patch("/:videoid", (req, res) => {
-  const found = videos.some((video) => video.id === req.params.videoid);
-  if (found) {
-    const updatedVideos = videos.map((video) =>
-      video.id === req.params.videoId ? { ...video, ...req.body } : video
-    );
-    writeJSONFile(videosJSONFile, updatedVideos);
 
-    res.json({ msg: "Video Updated", videos: updatedVideos });
-  } else {
-    res
-      .status(404)
-      .json({ errorMessage: `Video with ID: ${req.params.videoId} not found` });
-  }
-});
 
 router.delete("/:videoId/:commentId", (req, res) => {
   const { videoId, commentId } = req.params;
-  const comments = videos[0].comments;
- console.log(videos[0].comments);
+  const video = videos.filter((video)=> video.id === videoId);
+  const comments = video[0].comments;
+
+
   if (videoId && commentId) {
-    const videosAfterDeletion = comments.filter(
+    const commentsAfterDeletion = comments.filter(
       (comment) => comment.id !== commentId
-    );
-    writeJSONFile(videosJSONFile, videosAfterDeletion);
+    );      
+   console.log(commentsAfterDeletion);
+
+    writeJSONFile(videosJSONFile, videos);
     res.json({
-      msg: `video with ID: ${req.params.videoId} Deleted`,
-      videos: videosAfterDeletion,
+      msg: `comment with ID: ${req.params.commentId} Deleted`,
+      comments: commentsAfterDeletion,
     });
   } else {
     res
       .status(404)
-      .json({ errorMessage: `Video with ID: ${req.params.videoId} not found` });
+      .json({ errorMessage: `Video with ID: ${req.params.commentId} not found` });
   }
 });
 
