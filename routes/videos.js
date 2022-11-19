@@ -37,9 +37,9 @@ router.post("/:videoId/comments", (req, res) => {
 
   if (found) {
     const { comment } = req.body;
-    console.log("req.body", req.body);
-    console.log("comment", comment);
-    console.log("found.comments", found.comments);
+    // console.log("req.body", req.body);
+    // console.log("comment", comment);
+    // console.log("found.comments", found.comments);
 
     const newComment = {
       name: "vivi",
@@ -48,7 +48,7 @@ router.post("/:videoId/comments", (req, res) => {
       id: getNewId(),
     };
 
-    console.log("newComment", newComment);
+    // console.log("newComment", newComment);
 
     if (!comment) {
       return res.status(400).json({ error: "Please provide your comment" });
@@ -56,8 +56,8 @@ router.post("/:videoId/comments", (req, res) => {
     const foundComments = found.comments;
     const newFoundComments = [...foundComments, newComment];
     newFoundComments.sort((a, b) => b.timestamp - a.timestamp);
-    console.log("newFoundComments", newFoundComments);
-    console.log(videos);
+    // console.log("newFoundComments", newFoundComments);
+    // console.log(videos);
 
     writeJSONFile(videosJSONFile, videos);
 
@@ -132,13 +132,15 @@ router.patch("/:videoid", (req, res) => {
   }
 });
 
-router.delete("/:videoId", (req, res) => {
-  const found = videos.some((video) => video.id === req.params.videoId);
-  if (found) {
-    const videosAfterDeletion = videos.filter(
-      (video) => video.id !== req.params.videoId
+router.delete("/:videoId/:commentId", (req, res) => {
+  const { videoId, commentId } = req.params;
+  const comments = videos[0].comments;
+ console.log(videos[0].comments);
+  if (videoId && commentId) {
+    const videosAfterDeletion = comments.filter(
+      (comment) => comment.id !== commentId
     );
-    helper.writeJSONFile(videosJSONFile, videosAfterDeletion);
+    writeJSONFile(videosJSONFile, videosAfterDeletion);
     res.json({
       msg: `video with ID: ${req.params.videoId} Deleted`,
       videos: videosAfterDeletion,
