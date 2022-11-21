@@ -75,7 +75,7 @@ router.post("/", (req, res) => {
   const newVideo = {
     title,
     description,
-    // image,
+    image,
     id: getNewId(),
     author: generateName(),
     channel: generateName(),
