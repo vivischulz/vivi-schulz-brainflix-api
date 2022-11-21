@@ -21,10 +21,10 @@ router.get("/", (_req, res) => {
 
 //get a video by its ID
 router.get("/:videoId", (req, res) => {
-  const found = videos.find((video) => video.id === req.params.videoId);
+  const selectedVideo = videos.find((video) => video.id === req.params.videoId);
 
-  if (found) {
-    res.status(200).json(found);
+  if (selectedVideo) {
+    res.status(200).json(selectedVideo);
   } else {
     res
       .status(404)
@@ -32,10 +32,11 @@ router.get("/:videoId", (req, res) => {
   }
 });
 
+//Create a new comment
 router.post("/:videoId/comments", (req, res) => {
-  const found = videos.find((video) => video.id === req.params.videoId);
+  const selectedVideo = videos.find((video) => video.id === req.params.videoId);
 
-  if (found) {
+  if (selectedVideo) {
     const { comment } = req.body;
 
     const newComment = {
@@ -48,9 +49,9 @@ router.post("/:videoId/comments", (req, res) => {
     if (!comment) {
       return res.status(400).json({ error: "Please provide your comment" });
     }
-    const foundComments = found.comments;
-    const newFoundComments = [...foundComments, newComment];
-    newFoundComments.sort((a, b) => b.timestamp - a.timestamp);
+    const selectedComments = selectedVideo.comments;
+    selectedComments.push(newComment);
+    selectedComments.sort((a, b) => b.timestamp - a.timestamp);
 
     writeJSONFile(videosJSONFile, videos);
 
@@ -74,7 +75,7 @@ router.post("/", (req, res) => {
   const newVideo = {
     title,
     description,
-    image,
+    // image,
     id: getNewId(),
     author: generateName(),
     channel: generateName(),
@@ -112,6 +113,7 @@ router.post("/", (req, res) => {
 
 
 router.delete("/:videoId/:commentId", (req, res) => {
+  console.log(req.params);
   const { videoId, commentId } = req.params;
   const video = videos.filter((video)=> video.id === videoId);
   const comments = video[0].comments;
@@ -121,7 +123,11 @@ router.delete("/:videoId/:commentId", (req, res) => {
     const commentsAfterDeletion = comments.filter(
       (comment) => comment.id !== commentId
     );      
-   console.log(commentsAfterDeletion);
+   console.log("commentsAfterDeletion", commentsAfterDeletion);
+  
+   comments.splice(0, comments.length, ...commentsAfterDeletion);
+
+   console.log("comments", comments);
 
     writeJSONFile(videosJSONFile, videos);
     res.json({
